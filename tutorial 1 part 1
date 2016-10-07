@@ -1,0 +1,17 @@
+import requests
+import xmltodict
+authDetails = ('patkottman@gmail.com','RNyysEH1Ufl6sPyZXgRhToUbwXuY7DBP0hXycbu7gXTQ4zYVltxOpw')
+apiUrl = 'http://webservices.ns.nl/ns-api-avt?station=ut'
+response = requests.get(apiUrl, auth=authDetails)
+
+
+vertrekXML = xmltodict.parse(response.text)
+
+print('Dit zijn de vertrekkende treinen:')
+for vertrek in vertrekXML['ActueleVertrekTijden']['VertrekkendeTrein']:
+    eindbestemming = vertrek['EindBestemming']
+
+    vertrekTijd = vertrek['VertrekTijd']
+    vertrekTijd = vertrekTijd[11:16]
+
+    print('Om '+ vertrekTijd+' vertrekt een trein naar '+ eindbestemming)
